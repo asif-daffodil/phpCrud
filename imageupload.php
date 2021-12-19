@@ -1,5 +1,6 @@
 <?php 
     include_once('header.php'); 
+    (!isset($_SESSION['name']))? header("location: login"):null;
     $uname = $_SESSION['uname'];
     $getPreImgQuery = $conn->query("SELECT * FROM `users` WHERE `uname` = '$uname'");
     $getPreImgObj = $getPreImgQuery->fetch_object();
@@ -27,6 +28,8 @@
                    move_uploaded_file($tmpName, $destination);
                    $updateImg = $conn->query("UPDATE `users` SET `img` = '$destination' WHERE id = $id");
                    if($updateImg){
+                    $getPreImgQuery = $conn->query("SELECT * FROM `users` WHERE `uname` = '$uname'");
+                    $getPreImgObj = $getPreImgQuery->fetch_object();
                         $success = "Image uploaded successfully";
                         echo "<script>setInterval(function(){location.href=".$_SERVER['PHP_SELF']."},500)</script>";
                    }
